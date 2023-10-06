@@ -6,6 +6,7 @@ import (
     "os"
     "io"
     "os/exec"
+    "syscall"
     "time"
 )
 
@@ -21,6 +22,8 @@ func main() {
             // 如果你需要将命令的输出打印到终端，可以使用以下代码
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
+	    // 将命令设置为在后台运行
+            cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	    // 创建一个管道，用于向命令的标准输入流写入数据
             stdin, err := cmd.StdinPipe()
             if err != nil {
